@@ -1,0 +1,16 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-structure-container{
+  justify-content: flex-end;
+  margin-left:10px;
+  margin-top:10px;
+}
+
+.plus-button-block{
+  margin-left:10px;
+  margin-top:10px;
+}
+

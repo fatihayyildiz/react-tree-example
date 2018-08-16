@@ -1,0 +1,17 @@
+.folder-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.folder-image{
+
+}
+
+.folder-number{
+
+    align-self: center;
+}
+
+.sub-folder-plus-button{
+    margin-left:30px;
+}
