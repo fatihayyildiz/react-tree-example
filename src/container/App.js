@@ -15,22 +15,15 @@ class App extends Component {
             folderIndex:0
         };
         this.rootPlusButtonClicked = this.rootPlusButtonClicked.bind(this);
-        this.subFolderPlusButtonClick = this.subFolderPlusButtonClick.bind(this);
     }
 
 
-    rootPlusButtonClicked(buttonType) {
+    rootPlusButtonClicked() {
         this.props.RootPlusButtonClick(this.props.storeFolderIndex + 1);
-        /*if (buttonType === 'root') {
-            this.setState((prevState) => {
-                prevState.rootFolders.push({file: 1});
-                return {rootFolders: prevState.rootFolders,folderIndex: prevState.folderIndex + 1}
-            });
-        }*/
     }
 
 
-    componentWillReceiveProps(nextProps,nextContext){
+    componentWillReceiveProps(nextProps){
         if(this.props.storeFolderIndex !== nextProps.storeFolderIndex){
             console.log('store index incremented',nextProps.storeFolderIndex);
         }
@@ -57,7 +50,7 @@ class App extends Component {
 
 
 const mapStateToProps = (state) => {
-    return {storeFolderIndex: state.FolderReducer.storeFolderIndex || 1}
+    return {storeFolderIndex: state.FolderReducer.storeFolderIndex || 0}
 };
 
 const mapDispatchToProps = (dispatch) => {
