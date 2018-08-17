@@ -8,27 +8,48 @@ import {connect} from 'react-redux';
 
 class App extends Component {
 
+    /*
+    * {id: 1, childrens: []},
+     {
+     id: 2,
+     childrens: [
+     {id: 4, childrens: [
+     {id: 7, childrens: []}
+     ]},
+     {id: 6, childrens: []}
+     ]
+     },
+     {id: 3, childrens: []},
+     {id: 5, childrens: []}*/
     constructor(props) {
         super(props);
         this.state = {
-            rootFolders: [],
-            folderIndex:0
+            rootFolders: [
+
+            ],
+            folderIndex: 0
         };
         this.rootPlusButtonClicked = this.rootPlusButtonClicked.bind(this);
     }
 
 
-    rootPlusButtonClicked() {
-        this.props.RootPlusButtonClick(this.props.storeFolderIndex + 1);
+    rootPlusButtonClicked(buttonType) {
+        this.props.RootPlusButtonClick(
+            {
+                globalIndex:this.props.globalIndex + 1,
+                items: this.state.rootFolders
+            });
     }
 
 
-    componentWillReceiveProps(nextProps){
-        if(this.props.storeFolderIndex !== nextProps.storeFolderIndex){
-            console.log('store index incremented',nextProps.storeFolderIndex);
+    componentWillReceiveProps(nextProps) {
+        if (this.props.globalIndex !== nextProps.globalIndex) {
+            this.setState((prevState)=>{
+                return {rootFolders:nextProps.items}
+            });
         }
-
     }
+
 
     render() {
         return (
@@ -36,7 +57,7 @@ class App extends Component {
                 <div className="folder-structure-container">
                     {
                         this.state.rootFolders.map((file, index) => {
-                            return (<Folder key={'folder' + index} number={this.state.folderIndex}/> );
+                            return (<Folder key={'folder' + index} {...file} number={file.id} /> );
                         })
                     }
                 </div>
@@ -50,7 +71,7 @@ class App extends Component {
 
 
 const mapStateToProps = (state) => {
-    return {storeFolderIndex: state.FolderReducer.storeFolderIndex || 0}
+    return {globalIndex: state.FolderReducer.globalIndex || 0,items:state.FolderReducer.items}
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -60,4 +81,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

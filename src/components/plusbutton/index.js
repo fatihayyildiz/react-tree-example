@@ -19,7 +19,6 @@ class PlusButton extends Component {
         }
     }
 
-    // TODO: Fill svg button color as custom
     render() {
         return (
             <img src={PlusImage} style={{color: 'red', fill: '#F0F0F0'}} alt="Plus button" width={this.props.width}

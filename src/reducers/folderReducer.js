@@ -7,8 +7,8 @@ export function FolderReducer(state = [], action) {
 
     switch (action.type) {
         case ROOT_PLUS_BUTTON_CLICK:
-            return {...state,storeFolderIndex:action.payload.storeFolderIndex};
-            break;
+            return {...state,globalIndex:action.payload.globalIndex,items:action.payload.items};
+        default:
     }
     return state;
 }

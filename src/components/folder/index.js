@@ -9,6 +9,10 @@ import RightImage from './assets/images/right.svg';
 import './assets/styles/style.css';
 import PlusButton from '../plusbutton';
 
+import {bindActionCreators} from 'redux';
+import {SubPlusButtonClick} from '../../actions/folderAction';
+import {connect} from 'react-redux';
+
 class Folder extends Component {
 
     constructor(props) {
@@ -16,8 +20,8 @@ class Folder extends Component {
         this.state = {
             folded: false,
             subFolders: [],
-            privateFolderIndex:this.props.number,
-            privateSubFolderIndex:this.props.number
+            privateFolderIndex: this.props.number,
+            privateSubFolderIndex: this.props.number
         };
         this.foldingButtonClick = this.foldingButtonClick.bind(this);
         this.subPlusButtonClicked = this.subPlusButtonClicked.bind(this);
@@ -32,17 +36,18 @@ class Folder extends Component {
 
     subPlusButtonClicked() {
 
-        if(this.props.onSubPlusButtonClick){
-            this.props.onSubPlusButtonClick();
+        if(this.props.SubPlusButtonClick){
+            this.props.SubPlusButtonClick(
+                {
+                    currentItemId: this.props.number,
+                    globalIndex: this.props.globalIndex,
+                    items: this.props.items
+                })
         }
-
-        this.setState((prevState) => {
-            prevState.subFolders.push({file: 1});
-            return {subFolders: prevState.subFolders,privateSubFolderIndex:prevState.privateSubFolderIndex + 1}
-        });
     }
 
     render() {
+        const {SubPlusButtonClick,items,...cleanedProps} = this.props;
         return (
             <React.Fragment>
                 <div className="folder-container">
@@ -52,7 +57,7 @@ class Folder extends Component {
                          height={24}
                          alt="Right Icon"
                          onClick={this.foldingButtonClick}/>
-                    <div className="folder-number">{this.state.privateFolderIndex + 'th Folder'}</div>
+                    <div className="folder-number">{this.props.number}</div>
 
 
                 </div>
@@ -61,9 +66,17 @@ class Folder extends Component {
                         <div>
                             <div className="folder-structure-container">
                                 {
-                                    this.state.subFolders.map((file, index) => {
-                                        return (<Folder key={'folder' + index} number={this.state.privateSubFolderIndex}/> );
-                                    })
+
+                                    this.props.childrens ?
+
+                                        this.props.childrens.map((file, index) => {
+
+                                            return (<Folder key={'folder' + index}
+                                                            {...file}
+                                                            {...this.props}
+                                                            number={file.id}/> );
+                                        })
+                                        : null
                                 }
                             </div>
                             <div className="sub-folder-plus-button">
@@ -79,8 +92,19 @@ class Folder extends Component {
 }
 
 Folder.propTypes = {
-    onSubPlusButtonClick: PropTypes.func,
-    number: PropTypes.number.isRequired
+    number: PropTypes.any
 };
 
-export default Folder
+
+const mapStateToProps = (state) => {
+    return {globalIndex: state.FolderReducer.globalIndex || 0, items: state.FolderReducer.items}
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatch,
+        ...bindActionCreators({SubPlusButtonClick}, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Folder);

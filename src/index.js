@@ -5,10 +5,11 @@ import { createStore } from 'redux';
 import './index.css';
 import AppContainer from './container/App';
 import AppReducer from './reducers';
+import App from './example/example';
 
 const store = createStore(AppReducer);
 
-class App extends Component{
+class App1 extends Component{
     render() {
         return (
             <Provider store={store}>
@@ -18,4 +19,4 @@ class App extends Component{
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App1 />, document.getElementById('root'));
